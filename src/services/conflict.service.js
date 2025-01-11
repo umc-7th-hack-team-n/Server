@@ -2,6 +2,8 @@ import { createdGetJudgeConflictDTO } from "../dtos/conflict.dto.js";
 import { NonExistCoupleError } from "../errors/conflict.error.js";
 import { addJudgement } from "../repositories/conflict.repository.js";
 import { getJudgement } from "../repositories/conflict.repository.js";
+import { getConflictsByMonthRepository, getConflictsByIdRepository } from '../repositories/conflict.repository.js';
+import { conflictMonthDTO, conflictIdDTO } from '../dtos/conflict.dto.js';
 
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
@@ -76,4 +78,16 @@ export const getJudgeConflict = async (data) => {
     } catch (error) {
         throw error;
     }
+};
+
+//monthly-conflict-api
+export const getConflictsByMonthService = async month => {
+  const dto = conflictMonthDTO(month);
+  return await getConflictsByMonthRepository(dto.month);
+};
+
+//specific-conflict-api
+export const getConflictsByIdService = async conflict_id => {
+  const dto = conflictIdDTO(conflict_id);
+  return await getConflictsByIdRepository(dto.conflict_id);
 };
