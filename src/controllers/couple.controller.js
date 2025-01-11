@@ -88,7 +88,11 @@ export const handleCoupleInfo = async (req, res, next) => {
 };
 
 export const handleCouple = async (req, res, next) => {
+
+      /**
+
   /**
+
     #swagger.summary = '특정 커플 정보 조회 API';
     #swagger.description = '고유 ID를 사용하여 특정 커플의 세부 정보를 조회합니다.';
     #swagger.responses[200] = {
