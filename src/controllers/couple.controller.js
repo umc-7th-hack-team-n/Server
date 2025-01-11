@@ -1,13 +1,12 @@
-import { StatusCodes } from "http-status-codes";
-import { updateCoupleInfo } from "../services/couple.service.js";
+import { StatusCodes } from 'http-status-codes';
+import { updateCoupleInfo } from '../services/couple.service.js';
 import { bodyToCouple, responseFromCouple } from '../dtos/couple.dto.js';
-import { coupleInfo} from '../services/couple.service.js';
-import { NotFoundCouple } from '../errors/couple.error.js';  // 추가: NotFoundCouple 임포트
+import { coupleInfo } from '../services/couple.service.js';
+import { NotFoundCouple } from '../errors/couple.error.js'; // 추가: NotFoundCouple 임포트
 
 // 커플 정보 수정하기
-export const handleCoupleInfo = async (req, res, next) => {  
-    
-/*
+export const handleCoupleInfo = async (req, res, next) => {
+  /*
 #swagger.summary = '커플 정보 수정 API';
 #swagger.description = '커플 정보를 수정합니다.';
 #swagger.requestBody = {
@@ -79,18 +78,21 @@ export const handleCoupleInfo = async (req, res, next) => {
 };
 */
 
-       console.log("커플 정보 수정");
+  console.log('커플 정보 수정');
 
-       const coupleId = req.params.coupleId
-       
-       const coupleInfo = await updateCoupleInfo(coupleId, req.body);
-   
-       res.status(StatusCodes.OK).success(coupleInfo);
-   
-   };
+  const coupleId = req.params.coupleId;
+
+  const coupleInfo = await updateCoupleInfo(coupleId, req.body);
+
+  res.status(StatusCodes.OK).success(coupleInfo);
+};
 
 export const handleCouple = async (req, res, next) => {
+
       /**
+
+  /**
+
     #swagger.summary = '특정 커플 정보 조회 API';
     #swagger.description = '고유 ID를 사용하여 특정 커플의 세부 정보를 조회합니다.';
     #swagger.responses[200] = {
@@ -156,7 +158,7 @@ export const handleCouple = async (req, res, next) => {
       message: '커플 조회 성공!',
       data: responseData,
     });
-  }catch (error) {
+  } catch (error) {
     if (error instanceof NotFoundCouple) {
       return res.error({
         errorCode: error.errorCode,
@@ -164,8 +166,6 @@ export const handleCouple = async (req, res, next) => {
         data: error.data,
       });
     }
-    next(error); 
+    next(error);
   }
 }; // 커플 정보 조회 API
-
-
