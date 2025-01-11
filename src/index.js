@@ -5,9 +5,11 @@ import cors from 'cors';
 import swaggerUiExpress from 'swagger-ui-express';
 import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
+import { handleCouple } from './controllers/couple.controller.js';
 import { handleJudgeConflict } from "./controllers/conflict.controller.js";
 import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
 import { getPromiseByCoupleId, putPromiseByCoupleId } from './controllers/promise.controller.js';
+
 dotenv.config();
 
 const app = express();
@@ -24,7 +26,9 @@ app.use((req, res, next) => {
   };
 
   res.error = ({ errorCode = 'unknown', reason = null, data = null }) => {
+
     logger.error(`Error occurred: ${errorCode}, Reason: ${reason}`);
+
     return res.json({
       resultType: 'FAIL',
       error: { errorCode, reason, data },
@@ -104,6 +108,9 @@ app.use((err, req, res, next) => {
   });
 });
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
+
+app.get('/couple/:couple_id', handleCouple); // 커플 조회
+
 
 app.listen(port, () => {
   logger.info(`Server listening on port ${port}`);
