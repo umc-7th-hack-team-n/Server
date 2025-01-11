@@ -5,6 +5,7 @@ import cors from 'cors';
 import swaggerUiExpress from "swagger-ui-express";
 import swaggerAutogen from "swagger-autogen";
 import morganMiddleware from './middlewares/morganMiddleware.js';
+import { handleJudgeConflict } from "./controllers/conflict.controller.js";
 
 dotenv.config();
 
@@ -80,6 +81,9 @@ app.use(morganMiddleware);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+// 판결 API
+app.post('/api/conflict', handleJudgeConflict);
 
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 app.use((err, req, res, next) => {
