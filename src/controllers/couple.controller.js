@@ -80,7 +80,7 @@ export const handleCoupleInfo = async (req, res, next) => {
 
   console.log('커플 정보 수정');
 
-  const coupleId = req.params.coupleId;
+  const coupleId = req.params.couple_id;
 
   const coupleInfo = await updateCoupleInfo(coupleId, req.body);
 
