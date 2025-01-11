@@ -21,7 +21,7 @@ const logger = winston.createLogger({
   //* 로그 출력 형식 정의
   format: combine(
     timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    label({ label: 'Winston 연습 어플리케이션' }), // 어플리케이션 이름
+    label({ label: 'Love Court' }), // 어플리케이션 이름
     logFormat, // log 출력 포맷
   ),
   //* 실제 로그를 어떻게 기록을 한 것인가 정의

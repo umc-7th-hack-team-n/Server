@@ -6,6 +6,10 @@ import swaggerUiExpress from 'swagger-ui-express';
 import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
 import { handleCouple } from './controllers/couple.controller.js';
+import { handleJudgeConflict } from "./controllers/conflict.controller.js";
+import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
+import { getPromiseByCoupleId, putPromiseByCoupleId } from './controllers/promise.controller.js';
+
 dotenv.config();
 
 const app = express();
@@ -22,6 +26,9 @@ app.use((req, res, next) => {
   };
 
   res.error = ({ errorCode = 'unknown', reason = null, data = null }) => {
+
+    logger.error(`Error occurred: ${errorCode}, Reason: ${reason}`);
+
     return res.json({
       resultType: 'FAIL',
       error: { errorCode, reason, data },
@@ -80,6 +87,13 @@ app.use(morganMiddleware);
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+// 판결 API
+app.post('/api/conflict', handleJudgeConflict);
+app.get('/api/conflicts/:month', getConflictsByMonth);
+app.get('/api/conflicts/id/:conflict_id', getConflictsById);
+app.get('/api/promise/:couple_id', getPromiseByCoupleId);
+app.put('/api/promise/:couple_id', putPromiseByCoupleId);
 
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 app.use((err, req, res, next) => {

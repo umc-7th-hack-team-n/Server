@@ -3,12 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" 
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Couple {
-  couple_id   Int      @id @default(autoincrement())
+  couple_id   Int        @id @default(autoincrement())
   m_nickname  String
   f_nickname  String
   couple_date DateTime
@@ -18,19 +18,32 @@ model Couple {
 
 model Conflict {
   conflict_id Int      @id @default(autoincrement())
-  couple      Couple   @relation(fields: [couple_id], references: [couple_id])
   couple_id   Int
-  winner      String
-  score       Int
+  winner      String?  @db.VarChar(255)
+  score       String?  @db.VarChar(100)
   m_text      String
   f_text      String
   c_text      String
   created_at  DateTime @default(now())
+  couple      Couple   @relation(fields: [couple_id], references: [couple_id])
+
+  @@index([couple_id], map: "Conflict_couple_id_fkey")
 }
 
 model Promise {
-  id        Int      @id @default(autoincrement())
-  couple    Couple   @relation(fields: [couple_id], references: [couple_id])
+  id        Int     @id @default(autoincrement())
   couple_id Int
-  text      String
+  text1     String?
+  text2     String?
+  text3     String?
+  text4     String?
+  text5     String?
+  text6     String?
+  text7     String?
+  text8     String?
+  text9     String?
+  text10    String?
+  couple    Couple  @relation(fields: [couple_id], references: [couple_id])
+
+  @@index([couple_id], map: "Promise_couple_id_fkey")
 }
