@@ -5,8 +5,10 @@ import cors from 'cors';
 import swaggerUiExpress from 'swagger-ui-express';
 import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
+import { handleJudgeConflict } from "./controllers/conflict.controller.js";
 import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
 import { getPromiseByCoupleId } from './controllers/promise.controller.js';
+
 dotenv.config();
 
 const app = express();
@@ -83,6 +85,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+// 판결 API
+app.post('/api/conflict', handleJudgeConflict);
 app.get('/api/conflicts/:month', getConflictsByMonth);
 app.get('/api/conflicts/id/:conflict_id', getConflictsById);
 app.get('/api/promise/:couple_id', getPromiseByCoupleId);
