@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerUiExpress from "swagger-ui-express";
 import swaggerAutogen from "swagger-autogen";
 import morganMiddleware from './middlewares/morganMiddleware.js';
-
+import { handleCouple, handleCoupleChange } from './controllers/couple.controller.js';
 dotenv.config();
 
 const app = express();
@@ -94,6 +94,10 @@ app.use((err, req, res, next) => {
     });
 });
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
+
+app.get('/couple/:coupleId', handleCouple);  // 커플 조회
+app.put('/couple/:coupleId', handleCoupleChange); // 커플 정보 수정
+
 
 app.listen(port, () => {
   logger.info(`Server listening on port ${port}`);
