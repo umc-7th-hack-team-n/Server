@@ -6,7 +6,7 @@ import swaggerUiExpress from 'swagger-ui-express';
 import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
 import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
-
+import { getPromiseByCoupleId } from './controllers/promise.controller.js';
 dotenv.config();
 
 const app = express();
@@ -85,6 +85,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/conflicts/:month', getConflictsByMonth);
 app.get('/api/conflicts/id/:conflict_id', getConflictsById);
+app.get('/api/promise/:couple_id', getPromiseByCoupleId);
 
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 app.use((err, req, res, next) => {

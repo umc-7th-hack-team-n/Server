@@ -33,7 +33,7 @@ model Conflict {
 model Promise {
   id        Int     @id @default(autoincrement())
   couple_id Int
-  text1     String
+  text1     String?
   text2     String?
   text3     String?
   text4     String?
