@@ -1,7 +1,7 @@
-import { createdGetJudgeConflictDTO } from "../dtos/conflict.dto.js";
-import { NonExistCoupleError } from "../errors/conflict.error.js";
-import { addJudgement } from "../repositories/conflict.repository.js";
-import { getJudgement } from "../repositories/conflict.repository.js";
+import { createdGetJudgeConflictDTO } from '../dtos/conflict.dto.js';
+import { NonExistCoupleError } from '../errors/conflict.error.js';
+import { addJudgement } from '../repositories/conflict.repository.js';
+import { getJudgement } from '../repositories/conflict.repository.js';
 import { getConflictsByMonthRepository, getConflictsByIdRepository } from '../repositories/conflict.repository.js';
 import { conflictMonthDTO, conflictIdDTO } from '../dtos/conflict.dto.js';
 
@@ -11,7 +11,7 @@ import OpenAI from 'openai';
 dotenv.config();
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 // OpenAI API를 사용하여 judgement 생성
@@ -26,11 +26,11 @@ const generateJudgement = async (m_text, f_text) => {
             max_tokens: 300,
         });
 
-        return response.choices[0].message.content.trim();
-    } catch (error) {
-        console.error('Error generating judgement:', error);
-        throw new Error('판결문 생성에 실패했습니다.');
-    }
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error('Error generating judgement:', error);
+    throw new Error('판결문 생성에 실패했습니다.');
+  }
 };
 
 // OpenAI API를 사용하여 score 생성
@@ -45,39 +45,39 @@ const generateScore = async (m_text, f_text) => {
             max_tokens: 30,
         });
 
-        return response.choices[0].message.content.trim();
-    } catch (error) {
-        console.error('Error generating judgement:', error);
-        throw new Error('판결문 생성에 실패했습니다.');
-    }
+    return response.choices[0].message.content.trim();
+  } catch (error) {
+    console.error('Error generating judgement:', error);
+    throw new Error('판결문 생성에 실패했습니다.');
+  }
 };
 
 // gpt api를 통해 판결
-export const getJudgeConflict = async (data) => {
-    try {
-        // ChatGPT API를 호출
-        const judgement = await generateJudgement(data.m_text, data.f_text);
-        const score = await generateScore(data.m_text, data.f_text);
+export const getJudgeConflict = async data => {
+  try {
+    // ChatGPT API를 호출
+    const judgement = await generateJudgement(data.m_text, data.f_text);
+    const score = await generateScore(data.m_text, data.f_text);
 
-        // 생성된 judgement를 데이터에 추가
-        const judgementData = await addJudgement({
-            couple_id: data.couple_id,
-            score: score,
-            m_text: data.m_text,
-            f_text: data.f_text,
-            c_text: judgement,
-        });
+    // 생성된 judgement를 데이터에 추가
+    const judgementData = await addJudgement({
+      couple_id: data.couple_id,
+      score: score,
+      m_text: data.m_text,
+      f_text: data.f_text,
+      c_text: judgement,
+    });
 
-        if (judgementData === null || judgementData.length === 0) {
-            throw new NonExistCoupleError("존재하지 않는 커플입니다.", { couple_id: data.couple_id });
-        }
-
-        const judgements = await getJudgement(judgementData);
-
-        return createdGetJudgeConflictDTO(judgements);
-    } catch (error) {
-        throw error;
+    if (judgementData === null || judgementData.length === 0) {
+      throw new NonExistCoupleError('존재하지 않는 커플입니다.', { couple_id: data.couple_id });
     }
+
+    const judgements = await getJudgement(judgementData);
+
+    return createdGetJudgeConflictDTO(judgements);
+  } catch (error) {
+    throw error;
+  }
 };
 
 //monthly-conflict-api

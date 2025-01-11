@@ -1,11 +1,10 @@
-import { StatusCodes } from "http-status-codes";
-import { getJudgeConflict } from "../services/conflict.service.js";
+import { StatusCodes } from 'http-status-codes';
+import { getJudgeConflict } from '../services/conflict.service.js';
 import { getConflictsByMonthService, getConflictsByIdService } from '../services/conflict.service.js';
 
 // gpt api를 통해 판결하기
 export const handleJudgeConflict = async (req, res, next) => {
-
-/*
+  /*
 #swagger.summary = '판결 API';
 #swagger.description = 'ChatGPT API를 기반으로 연인간의 잘못을 판결합니다.'
 #swagger.requestBody = {
@@ -75,30 +74,18 @@ export const handleJudgeConflict = async (req, res, next) => {
 };
 */
 
-   
-       console.log("gpt를 활용한 판결 요청");
-       
-       const judgement = await getJudgeConflict(req.body);
-   
-       res.status(StatusCodes.OK).success(judgement);
-   
-   };
+  console.log('gpt를 활용한 판결 요청');
+
+  const judgement = await getJudgeConflict(req.body);
+
+  res.status(StatusCodes.OK).success(judgement);
+};
 
 //monthly-conflict-api
 export const getConflictsByMonth = async (req, res, next) => {
   /**
     #swagger.summary = '월별 다툼 기록 조회 API';
     #swagger.description = '특정 월에 발생한 모든 다툼 기록을 조회합니다.';
-    #swagger.parameters['month'] = {
-      in: 'path',
-      description: '조회할 월 (YYYY-MM 형식)',
-      required: true,
-      schema: {
-        type: 'string',
-        pattern: "^\\d{4}-(0[1-9]|1[0-2])$",
-        example: '2025-01'
-      }
-    };
     #swagger.responses[200] = {
       description: '월별 다툼 기록 조회 성공',
       content: {
@@ -161,15 +148,6 @@ export const getConflictsById = async (req, res, next) => {
   /**
     #swagger.summary = '특정 다툼 기록 조회 API';
     #swagger.description = '고유 ID를 사용하여 특정 다툼의 세부 정보를 조회합니다.';
-    #swagger.parameters['conflict_id'] = {
-      in: 'path',
-      description: '조회할 다툼의 고유 ID',
-      required: true,
-      schema: {
-        type: 'integer',
-        example: 1
-      }
-    };
     #swagger.responses[200] = {
       description: '다툼 기록 조회 성공',
       content: {
