@@ -6,7 +6,7 @@ import swaggerUiExpress from 'swagger-ui-express';
 import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
 import { handleCouple } from './controllers/couple.controller.js';
-import { handleJudgeConflict } from "./controllers/conflict.controller.js";
+import { handleJudgeConflict } from './controllers/conflict.controller.js';
 import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
 import { handleCoupleInfo } from './controllers/couple.controller.js';
 import { getPromiseByCoupleId, putPromiseByCoupleId } from './controllers/promise.controller.js';
@@ -27,7 +27,6 @@ app.use((req, res, next) => {
   };
 
   res.error = ({ errorCode = 'unknown', reason = null, data = null }) => {
-
     logger.error(`Error occurred: ${errorCode}, Reason: ${reason}`);
 
     return res.json({
@@ -89,13 +88,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// 판결 API
-app.post('/api/conflict', handleJudgeConflict);
+
+app.post('/api/conflict', handleJudgeConflict);  
 app.get('/api/conflicts/:month', getConflictsByMonth);
 app.get('/api/conflicts/id/:conflict_id', getConflictsById);
 app.get('/api/promise/:couple_id', getPromiseByCoupleId);
-app.patch('/api/couple/:coupleId', handleCoupleInfo);
+app.patch('/api/couple/:couple_id', handleCoupleInfo);
 app.put('/api/promise/:couple_id', putPromiseByCoupleId);
+app.get('/couple/:couple_id', handleCouple); 
 
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 app.use((err, req, res, next) => {
@@ -111,7 +111,6 @@ app.use((err, req, res, next) => {
 });
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 
-app.get('/couple/:couple_id', handleCouple); // 커플 조회
 
 
 app.listen(port, () => {
