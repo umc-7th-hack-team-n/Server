@@ -1,67 +1,67 @@
-# name: deploy-main
+name: deploy-main
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   workflow_dispatch:
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v4
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-#       - name: Configure SSH
-#         run: |
-#           mkdir -p ~/.ssh
-#           echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
-#           chmod 600 ~/.ssh/id_rsa
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-#           cat >>~/.ssh/config <<END
-#           Host Hrr-BE
-#             HostName 13.124.126.83
-#             IdentityFile ~/.ssh/id_rsa
-#             User ubuntu
-#             StrictHostKeyChecking no
-#           END
-#         env:
-#           EC2_USER: ubuntu
-#           EC2_HOST: ${{ secrets.EC2_HOST }}
-#           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          cat >>~/.ssh/config <<END
+          Host couple
+            HostName 43.202.96.180
+            IdentityFile ~/.ssh/id_rsa
+            User ubuntu
+            StrictHostKeyChecking no
+          END
+        env:
+          EC2_USER: ubuntu
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
 
-#       - name: Copy Workspace
-#         run: |
-#           ssh Hrr-BE 'sudo mkdir -p /opt/app'
-#           ssh Hrr-BE 'sudo chown ubuntu:ubuntu /opt/app'
-#           scp -r ./[!.]* Hrr-BE:/opt/app
+      - name: Copy Workspace
+        run: |
+          ssh couple 'sudo mkdir -p /opt/app'
+          ssh couple 'sudo chown ubuntu:ubuntu /opt/app'
+          scp -r ./[!.]* couple:/opt/app
 
-#       - name: Install dependencies
-#         run: |
-#           ssh Hrr-BE 'npm install --prefix /opt/app/'
+      - name: Install dependencies
+        run: |
+          ssh couple 'npm install --prefix /opt/app/'
 
-#       - name: Copy systemd service file
-#         run: |
-#           ssh Hrr-BE '
-#             echo "[Unit]
-#             Description=Hrr-BE
-#             After=network.target
+      - name: Copy systemd service file
+        run: |
+          ssh couple '
+            echo "[Unit]
+            Description=couple
+            After=network.target
 
-#             [Service]
-#             User=${USER}
-#             ExecStart=/usr/bin/npm run dev --prefix /opt/app/
-#             Restart=always
+            [Service]
+            User=${USER}
+            ExecStart=/usr/bin/npm run dev --prefix /opt/app/
+            Restart=always
 
-#             [Install]
-#             WantedBy=multi-user.target" | sudo tee /etc/systemd/system/app.service
-#           '
+            [Install]
+            WantedBy=multi-user.target" | sudo tee /etc/systemd/system/app.service
+          '
 
-#       - name: Enable systemd service
-#         run: |
-#           ssh Hrr-BE 'sudo systemctl daemon-reload'
-#           ssh Hrr-BE 'sudo systemctl enable app'
+      - name: Enable systemd service
+        run: |
+          ssh couple 'sudo systemctl daemon-reload'
+          ssh couple 'sudo systemctl enable app'
 
-#       - name: Restart systemd service
-#         run: |
-#           ssh Hrr-BE 'sudo systemctl restart app'
+      - name: Restart systemd service
+        run: |
+          ssh couple 'sudo systemctl restart app'
