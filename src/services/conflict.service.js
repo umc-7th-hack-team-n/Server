@@ -23,7 +23,7 @@ const generateJudgement = async (m_text, f_text) => {
                 { role: 'user', content: `둘 중 누가 더 잘못을 했는지에 대해 150자 이내로 정리해서 알려줘. 반드시 
                     누가 더 잘못했다라는 내용이 들어가야만 해. 남자의 ${m_text}라는 주장과 여자의 ${f_text}라는 주장` },
             ],
-            max_tokens: 3000,
+            max_tokens: 500,
         });
 
         return response.choices[0].message.content.trim();

@@ -8,7 +8,6 @@ import morganMiddleware from './middlewares/morganMiddleware.js';
 import { handleCouple } from './controllers/couple.controller.js';
 import { handleJudgeConflict } from "./controllers/conflict.controller.js";
 import { getConflictsByMonth, getConflictsById } from './controllers/conflict.controller.js';
-import { getPromiseByCoupleId } from './controllers/promise.controller.js';
 import { handleCoupleInfo } from './controllers/couple.controller.js';
 import { getPromiseByCoupleId, putPromiseByCoupleId } from './controllers/promise.controller.js';
 
