@@ -1,8 +1,8 @@
-export const createdFixCoupleInfoDTO = (updatedCouple) => {
-    return {
-      data: updatedCouple,
-    };
+export const createdFixCoupleInfoDTO = updatedCouple => {
+  return {
+    data: updatedCouple,
   };
+};
 
 // src/dtos/couple.dtos.js
 // 조회 데이터

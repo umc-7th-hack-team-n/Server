@@ -5,15 +5,6 @@ export const getPromiseByCoupleId = async (req, res) => {
   /**
     #swagger.summary = '특정 커플의 약속 조회 API';
     #swagger.description = '커플 ID를 기반으로 Promise 테이블의 데이터를 조회합니다.';
-    #swagger.parameters['couple_id'] = {
-      in: 'path',
-      description: '조회할 커플 ID',
-      required: true,
-      schema: {
-        type: 'integer',
-        example: 1
-      }
-    };
     #swagger.responses[200] = {
       description: '약속 데이터 조회 성공',
       content: {
@@ -84,15 +75,6 @@ export const putPromiseByCoupleId = async (req, res) => {
   /**
     #swagger.summary = '특정 커플의 약속 수정 및 생성 API';
     #swagger.description = '커플 ID를 기반으로 Promise 테이블의 약속 데이터를 수정하거나 생성합니다.';
-    #swagger.parameters['couple_id'] = {
-      in: 'path',
-      description: '수정 또는 생성할 커플 ID',
-      required: true,
-      schema: {
-        type: 'integer',
-        example: 1
-      }
-    };
     #swagger.requestBody = {
       description: '수정할 약속 데이터',
       required: true,
