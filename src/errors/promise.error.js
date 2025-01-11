@@ -4,6 +4,7 @@ export class coupleNotFoundError extends Error {
   constructor(reason, data) {
     super(reason);
     this.reason = reason;
+    this.statusCode = 400;
     this.data = data;
   }
 }
@@ -14,6 +15,7 @@ export class coupleIdNotValidError extends Error {
   constructor(reason, data) {
     super(reason);
     this.reason = reason;
+    this.statusCode = 400;
     this.data = data;
   }
 }
