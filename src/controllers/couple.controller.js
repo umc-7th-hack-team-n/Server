@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import { bodyToCouple, responseFromCouple } from '../dtos/couple.dto.js';
 import { coupleInfo} from '../services/couple.service.js';
 
+import { NotFoundCouple } from '../errors/couple.error.js';  // 추가: NotFoundCouple 임포트
 
 /**
  * @swagger
@@ -107,7 +108,17 @@ export const handleCouple = async (req, res, next) => {
       data: responseData,
     });
   }catch (error) {
+    if (error instanceof NotFoundCouple) {
+      return res.error({
+        errorCode: error.errorCode,
+        reason: error.reason,
+        data: error.data,
+      });
+    }
     next(error); 
   }
 }; // 커플 정보 조회 API
+
+
+
 

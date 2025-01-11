@@ -12,9 +12,7 @@ export const coupleInfo = async (couple_id) => {
   // 레포지토리에서 커플 정보 조회
   const couple = await getCoupleById(couple_id);
 
-  console.log('Fetched Couple:', couple); // couple 객체 확인
-
-  if (!couple) {
+  if (couple == null) {
     throw new NotFoundCouple("커플 정보를 찾을 수 없습니다.", { couple_id: couple_id });
   }
 
