@@ -1,6 +1,14 @@
 import { ConflictIdNotValidError, MonthNotValidError } from '../errors/conflict.error.js';
 import logger from '../logger.js';
 
+export const createdGetJudgeConflictDTO = (body) => {
+    return {
+      couple_id: body.couple_id,
+      c_text: body.c_text,
+      score: body.score,
+    }
+  };
+
 //monthly-conflict-api
 export const conflictMonthDTO = month => {
   logger.debug(month);
