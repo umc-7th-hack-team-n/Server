@@ -1,14 +1,40 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// schema.prisma
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // 변경 가능: MySQL, SQLite 등 사용 중인 데이터베이스에 맞게 설정
   url      = env("DATABASE_URL")
+}
+
+model Couple {
+  couple_id   Int      @id @default(autoincrement())
+  m_nickname  String
+  f_nickname  String
+  couple_date DateTime
+  conflicts   Conflict[]
+  promises    Promise[]
+}
+
+model Conflict {
+  conflict_id Int      @id @default(autoincrement())
+  couple      Couple   @relation(fields: [couple_id], references: [couple_id])
+  couple_id   Int
+  winner      String
+  score       Int
+  m_text      String
+  f_text      String
+  c_text      String
+  created_at  DateTime @default(now())
+}
+
+model Promise {
+  id        Int      @id @default(autoincrement())
+  couple    Couple   @relation(fields: [couple_id], references: [couple_id])
+  couple_id Int
+  text      String
 }
