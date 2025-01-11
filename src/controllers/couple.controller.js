@@ -1,18 +1,18 @@
-import { StatusCodes } from "http-status-codes";
-import { DuplicateCouple, NotFoundCouple } from "../errors/couple.error.js";
-import { bodyToCouple, responseFromCouple } from "../dtos/couple.dto.js";
-import { coupleInfo, coupleInfoUpdateService } from "../services/couple.service.js"; 
-import logger from '../logger.js'; 
+import { StatusCodes } from 'http-status-codes';
+import { DuplicateCouple, NotFoundCouple } from '../errors/couple.error.js';
+import { bodyToCouple, responseFromCouple } from '../dtos/couple.dto.js';
+import { coupleInfo, coupleInfoUpdateService } from '../services/couple.service.js';
+import logger from '../logger.js';
 
 /**
  * @swagger
- * /couple/{coupleId}:
+ * /couple/{couple_id}:
  *   get:
  *     summary: 커플 정보 조회
  *     description: 주어진 커플 ID에 해당하는 커플 정보를 조회합니다.
  *     parameters:
  *       - in: path
- *         name: coupleId
+ *         name: couple_id
  *         required: true
  *         description: 조회할 커플의 ID
  *         schema:
@@ -37,16 +37,16 @@ import logger from '../logger.js';
  *                     data:
  *                       type: object
  *                       properties:
- *                         coupleId:
+ *                         couple_id:
  *                           type: integer
  *                           example: 1
- *                         mNickname:
+ *                         m_nickname:
  *                           type: string
  *                           example: "john_doe"
- *                         fNickname:
+ *                         f_nickname:
  *                           type: string
  *                           example: "jane_doe"
- *                         coupleDate:
+ *                         couple_date:
  *                           type: string
  *                           format: date
  *                           example: "2025-01-01"
@@ -96,40 +96,40 @@ import logger from '../logger.js';
  *                       additionalProperties: true
  */
 export const handleCouple = async (req, res, next) => {
-    try {
-      const coupleId = parseInt(req.params.coupleId, 10); // coupleId 파싱
-  
-      // 서비스에서 커플 정보 조회
-      const couple = await coupleInfo(coupleId);
-  
-      if (!couple) {
-        throw new NotFoundCouple("커플 정보를 찾을 수 없습니다.", { coupleId });
-      }
-  
-      logger.info("Fetched Couple Data:", couple); // couple 데이터 확인
-  
-      const responseData = responseFromCouple(couple);
-  
-      logger.info("Response Data from responseFromCouple:", responseData); // 응답 데이터 확인
-  
-      return res.status(StatusCodes.OK).success({
-        message: "커플 조회 성공!",
-        data: responseData,
-      });
-    } catch (error) {
-      next(error); // 에러 미들웨어로 전달
+  try {
+    const couple_id = parseInt(req.params.couple_id, 10); // couple_id 파싱
+
+    // 서비스에서 커플 정보 조회
+    const couple = await coupleInfo(couple_id);
+
+    if (!couple) {
+      throw new NotFoundCouple('커플 정보를 찾을 수 없습니다.', { couple_id });
     }
-  }; // 커플 정보 조회 API
+
+    console.log('Fetched Couple Data:', couple); // couple 데이터 확인
+
+    const responseData = responseFromCouple(couple);
+
+    console.log('Response Data from responseFromCouple:', responseData); // 응답 데이터 확인
+
+    return res.status(StatusCodes.OK).success({
+      message: '커플 조회 성공!',
+      data: responseData,
+    });
+  } catch (error) {
+    next(error); // 에러 미들웨어로 전달
+  }
+}; // 커플 정보 조회 API
 
 /**
  * @swagger
- * /couple/{coupleId}:
+ * /couple/{couple_id}:
  *   put:
  *     summary: 커플 정보 수정
  *     description: 주어진 커플 ID에 해당하는 커플 정보를 수정합니다.
  *     parameters:
  *       - in: path
- *         name: coupleId
+ *         name: couple_id
  *         required: true
  *         description: 수정할 커플의 ID
  *         schema:
@@ -171,16 +171,16 @@ export const handleCouple = async (req, res, next) => {
  *                     data:
  *                       type: object
  *                       properties:
- *                         coupleId:
+ *                         couple_id:
  *                           type: integer
  *                           example: 1
- *                         mNickname:
+ *                         m_nickname:
  *                           type: string
  *                           example: "john_doe"
- *                         fNickname:
+ *                         f_nickname:
  *                           type: string
  *                           example: "jane_doe"
- *                         coupleDate:
+ *                         couple_date:
  *                           type: string
  *                           format: date
  *                           example: "2025-01-01"
@@ -229,26 +229,3 @@ export const handleCouple = async (req, res, next) => {
  *                       type: object
  *                       additionalProperties: true
  */
-export const handleCoupleChange = async (req, res, next) => {
-  try {
-    const coupleId = parseInt(req.params.coupleId, 10); // coupleId 파싱
-    const coupleData = bodyToCouple(req.body); // 수정할 데이터
-
-    // 서비스에서 커플 정보 수정
-    const updatedCouple = await coupleInfoUpdateService(coupleId, coupleData);
-
-    logger.info("Updated Couple Data:", updatedCouple); // 업데이트된 커플 데이터 확인
-
-    const responseData = responseFromCouple(updatedCouple);
-
-    // responseData 로그 찍기
-    logger.info("Response Data from responseFromCouple:", responseData);
-
-    return res.status(StatusCodes.OK).success({
-      message: "커플 정보 수정 성공",
-      data: responseData,
-    });
-  } catch (error) {
-    next(error); // 에러 미들웨어로 전달
-  }
-};

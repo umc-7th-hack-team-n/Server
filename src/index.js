@@ -2,8 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import logger from './logger.js';
 import cors from 'cors';
-import swaggerUiExpress from "swagger-ui-express";
-import swaggerAutogen from "swagger-autogen";
+import swaggerUiExpress from 'swagger-ui-express';
+import swaggerAutogen from 'swagger-autogen';
 import morganMiddleware from './middlewares/morganMiddleware.js';
 import { handleCouple, handleCoupleChange } from './controllers/couple.controller.js';
 dotenv.config();
@@ -13,20 +13,20 @@ const port = process.env.PORT;
 
 /*****************공통 응답을 사용할 수 있는 헬퍼 함수 등록*********************/
 app.use((req, res, next) => {
-  res.success = (success) => {
-      return res.json({
-          resultType: "SUCCESS",
-          error: null,
-          success: success,
-      });
+  res.success = success => {
+    return res.json({
+      resultType: 'SUCCESS',
+      error: null,
+      success: success,
+    });
   };
 
-  res.error = ({ errorCode = "unknown", reason = null, data = null }) => {
-      return res.json({
-          resultType: "FAIL",
-          error: { errorCode, reason, data },
-          success: null,
-      });
+  res.error = ({ errorCode = 'unknown', reason = null, data = null }) => {
+    return res.json({
+      resultType: 'FAIL',
+      error: { errorCode, reason, data },
+      success: null,
+    });
   };
 
   next();
@@ -34,45 +34,45 @@ app.use((req, res, next) => {
 /*****************공통 응답을 사용할 수 있는 헬퍼 함수 등록*********************/
 
 app.use(cors());
-app.use(express.static('public'))
-app.use(express.json())
+app.use(express.static('public'));
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
-    "/docs",
-    swaggerUiExpress.serve,
-    swaggerUiExpress.setup(
-        {},
-        {
-            swaggerOptions: {
-                url: "/openapi.json",
-            },
-        }
-    )
+  '/docs',
+  swaggerUiExpress.serve,
+  swaggerUiExpress.setup(
+    {},
+    {
+      swaggerOptions: {
+        url: '/openapi.json',
+      },
+    },
+  ),
 );
-app.get("/openapi.json", async (req, res, next) => {
-    // #swagger.ignore = true
-    const options = {
-        openapi: "3.0.0",
-        disableLogs: true,
-        writeOutputFile: false,
-    };
-    const outputFile = "/dev/null"; // 파일 출력은 사용하지 않습니다.
-    const routes = ["./src/index.js"];
+app.get('/openapi.json', async (req, res, next) => {
+  // #swagger.ignore = true
+  const options = {
+    openapi: '3.0.0',
+    disableLogs: true,
+    writeOutputFile: false,
+  };
+  const outputFile = '/dev/null'; // 파일 출력은 사용하지 않습니다.
+  const routes = ['./src/index.js'];
 
-    // 요청의 host와 protocol을 동적으로 가져오기
-    const protocol = req.protocol; // http 또는 https
-    const host = req.get("host");
+  // 요청의 host와 protocol을 동적으로 가져오기
+  const protocol = req.protocol; // http 또는 https
+  const host = req.get('host');
 
-    const doc = {
-        info: {
-            title: "Love Court",
-            description: "Love Court 프로젝트",
-        },
-        host: `${protocol}://${host}`,
-    };
+  const doc = {
+    info: {
+      title: 'Love Court',
+      description: 'Love Court 프로젝트',
+    },
+    host: `${protocol}://${host}`,
+  };
 
-    const result = await swaggerAutogen(options)(outputFile, routes, doc);
-    res.json(result ? result.data : null);
+  const result = await swaggerAutogen(options)(outputFile, routes, doc);
+  res.json(result ? result.data : null);
 });
 
 app.use(morganMiddleware);
@@ -83,21 +83,20 @@ app.get('/', (req, res) => {
 
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 app.use((err, req, res, next) => {
-    if (res.headersSent) {
-        return next(err);
-    }
-    console.log(err);
-    res.status(err.statusCode || 500).error({
-        errorCode: err.errorCode || "unknown",
-        reason: err.reson || err.message || null,
-        data: err.data || null,
-    });
+  if (res.headersSent) {
+    return next(err);
+  }
+  console.log(err);
+  res.status(err.statusCode || 500).error({
+    errorCode: err.errorCode || 'unknown',
+    reason: err.reson || err.message || null,
+    data: err.data || null,
+  });
 });
 /****************전역 오류를 처리하기 위한 미들웨어*******************/
 
-app.get('/couple/:coupleId', handleCouple);  // 커플 조회
-app.put('/couple/:coupleId', handleCoupleChange); // 커플 정보 수정
-
+app.get('/couple/:couple_id', handleCouple); // 커플 조회
+app.put('/couple/:couple_id', handleCoupleChange); // 커플 정보 수정
 
 app.listen(port, () => {
   logger.info(`Server listening on port ${port}`);
