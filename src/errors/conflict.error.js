@@ -15,6 +15,7 @@ export class MonthNotValidError extends Error {
   constructor(reason, data) {
     super(reason);
     this.reason = reason;
+    this.statusCode = 400;
     this.data = data;
   }
 }
@@ -25,6 +26,7 @@ export class ConflictNotFoundError extends Error {
   constructor(reason, data) {
     super(reason);
     this.reason = reason;
+    this.statusCode = 400;
     this.data = data;
   }
 }
@@ -35,6 +37,7 @@ export class ConflictIdNotValidError extends Error {
   constructor(reason, data) {
     super(reason);
     this.reason = reason;
+    this.statusCode = 400;
     this.data = data;
   }
 }

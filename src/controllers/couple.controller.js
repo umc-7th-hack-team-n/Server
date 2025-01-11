@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
 import { updateCoupleInfo } from '../services/couple.service.js';
-import { bodyToCouple, responseFromCouple } from '../dtos/couple.dto.js';
+import { responseFromCouple } from '../dtos/couple.dto.js';
 import { coupleInfo } from '../services/couple.service.js';
 import { NotFoundCouple } from '../errors/couple.error.js'; // 추가: NotFoundCouple 임포트
 
@@ -89,7 +89,6 @@ export const handleCoupleInfo = async (req, res, next) => {
 
 export const handleCouple = async (req, res, next) => {
 
-      /**
 
   /**
 
@@ -160,7 +159,7 @@ export const handleCouple = async (req, res, next) => {
     });
   } catch (error) {
     if (error instanceof NotFoundCouple) {
-      return res.error({
+      return res.status(400).json({
         errorCode: error.errorCode,
         reason: error.reason,
         data: error.data,
